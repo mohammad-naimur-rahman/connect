@@ -3,6 +3,7 @@ import { Button } from 'react-native'
 import { KeyboardAvoidingView, StyleSheet } from 'react-native'
 import { View, Text } from 'react-native'
 import { Input } from 'react-native-elements/dist/input/Input'
+import { auth } from '../firebase'
 
 const RegisterScreen = ({ navigation }) => {
 
@@ -18,7 +19,13 @@ const RegisterScreen = ({ navigation }) => {
     }, [navigation])
 
     const register = () => {
-
+        auth.createUserWithEmailAndPassword(email, password)
+            .then(authUser => {
+                authUser.user.update({
+                    displayName: name,
+                    photoURL: imgURL
+                });
+            }).catch(error => alert(error.message));
     }
 
     return (
