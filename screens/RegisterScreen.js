@@ -21,7 +21,7 @@ const RegisterScreen = ({ navigation }) => {
     const register = () => {
         auth.createUserWithEmailAndPassword(email, password)
             .then(authUser => {
-                authUser.user.update({
+                authUser.user.updateProfile({
                     displayName: name,
                     photoURL: imgURL
                 });
@@ -63,6 +63,7 @@ const RegisterScreen = ({ navigation }) => {
                 />
                 <Button
                     style={styles.button}
+                    raised
                     onPress={register} title='Sign up to new account'
                 />
             </View>
