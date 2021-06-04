@@ -15,7 +15,7 @@ import {AntDesign, FontAwesome, Ionicons} from "@expo/vector-icons";
 import {StatusBar} from "expo-status-bar";
 import {TouchableWithoutFeedback, TouchableOpacity} from "react-native";
 import {db, auth} from "../firebase";
-import * as firebase from "firebase";
+import firebase from "firebase/app";
 
 const ChatScreen = ({navigation, route}) => {
   const [input, setInput] = useState("");
@@ -31,7 +31,9 @@ const ChatScreen = ({navigation, route}) => {
           <Avatar
             rounded
             source={{
-              uri: "https://pixabay.com/vectors/avatar-icon-placeholder-1577909/",
+              uri:
+                messages[0]?.data.photoURL ||
+                "https://media.istockphoto.com/vectors/male-user-icon-vector-id517998264?k=6&m=517998264&s=612x612&w=0&h=cVT9i04gMY9KhLaTavgG-zY54PnYdXNjblZ9AQOHRqc=",
             }}
           />
           <Text style={{color: "white", marginLeft: 10, fontWeight: "700"}}>
@@ -62,7 +64,7 @@ const ChatScreen = ({navigation, route}) => {
         </View>
       ),
     });
-  }, [navigation]);
+  }, [navigation, messages]);
 
   const sendMessage = () => {
     Keyboard.dismiss();
@@ -106,7 +108,7 @@ const ChatScreen = ({navigation, route}) => {
       >
         <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
           <>
-            <ScrollView>
+            <ScrollView contentContainerStyle={{paddingTop: 15}}>
               {messages.map(({id, data}) => {
                 data.email === auth.currentUser.email ? (
                   <View key={id} style={styles.reciever}>
@@ -122,14 +124,31 @@ const ChatScreen = ({navigation, route}) => {
                       bottom={-15}
                       right={-5}
                       size={30}
-                      source={data.photoURL}
+                      source={{
+                        uri: data.photoURL,
+                      }}
                     />
                     <Text style={styles.recieverText}>{data.message}</Text>
                   </View>
                 ) : (
                   <View style={styles.sender}>
-                    <Avatar />
+                    <Avatar
+                      position="absolute"
+                      rounded
+                      containerStyle={{
+                        position: "absolute",
+                        bottom: -15,
+                        right: -5,
+                      }}
+                      bottom={-15}
+                      right={-5}
+                      size={30}
+                      source={{
+                        uri: data.photoURL,
+                      }}
+                    />
                     <Text style={styles.senderText}>{data.message}</Text>
+                    <Text style={styles.senderName}>{data.displayName}</Text>
                   </View>
                 );
               })}
@@ -177,6 +196,23 @@ const styles = StyleSheet.create({
     margin: 15,
     maxWidth: "80%",
     position: "relative",
+  },
+  senderText: {
+    color: "white",
+    fontWeight: "500",
+    marginLeft: 10,
+    marginBottom: 15,
+  },
+  recieverText: {
+    color: "black",
+    fontWeight: "500",
+    marginLeft: 10,
+  },
+  senderName: {
+    left: 10,
+    paddingRight: 10,
+    fontSize: 10,
+    color: "white",
   },
   footer: {
     flexDirection: "row",
