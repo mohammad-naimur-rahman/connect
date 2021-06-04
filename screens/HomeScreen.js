@@ -8,7 +8,7 @@ import CustomeListItem from "../Components/CustomeListItem";
 import {auth, db} from "../firebase";
 
 const HomeScreen = ({navigation}) => {
-  const [chats, setChats] = useState(["slkd"]);
+  const [chats, setChats] = useState([]);
 
   const signOutUser = () => {
     auth.signOut().then(() => {
@@ -77,9 +77,6 @@ const HomeScreen = ({navigation}) => {
         {chats.map(({id, data: {chatName}}) => (
           <CustomeListItem key={id} id={id} chatName={chatName} />
         ))}
-        {/* {chats.map(({id, data}) => (
-          <CustomeListItem key={id} id={id} data={data} />
-        ))} */}
         {/* <CustomeListItem></CustomeListItem> */}
       </ScrollView>
     </SafeAreaView>
