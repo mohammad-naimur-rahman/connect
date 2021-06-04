@@ -4,7 +4,7 @@ import {StyleSheet, Text, View} from "react-native";
 
 const CustomeListItem = ({id, chatName, enterChat}) => {
   return (
-    <ListItem key={id} bottomDivider>
+    <ListItem onPress={() => enterChat(id, chatName)} key={id} bottomDivider>
       <Avatar
         rounded
         source={{
@@ -13,7 +13,7 @@ const CustomeListItem = ({id, chatName, enterChat}) => {
       />
 
       <ListItem.Content>
-        <ListItem.Title style={{fontWeight: "800"}}>Friend List</ListItem.Title>
+        <ListItem.Title style={{fontWeight: "800"}}>{chatName}</ListItem.Title>
         <ListItem.Subtitle numberOfList={1} ellipsizeMode="tail">
           all is ok
         </ListItem.Subtitle>

@@ -1,7 +1,7 @@
 import React, {useEffect, useLayoutEffect, useState} from "react";
 import {ScrollView} from "react-native";
 import {SafeAreaView, TouchableOpacity} from "react-native";
-import {View, Text} from "react-native";
+import {StyleSheet, View, Text} from "react-native";
 import {Avatar} from "react-native-elements";
 import {AntDesign, SimpleLineIcons} from "@expo/vector-icons";
 import CustomeListItem from "../Components/CustomeListItem";
@@ -31,12 +31,12 @@ const HomeScreen = ({navigation}) => {
 
   useLayoutEffect(() => {
     navigation.setOptions({
-      title: "Chat",
+      title: "Contact",
       headerStyle: {backgroundColor: "#fff"},
       headerTitleStyle: {color: "balck"},
       headerTintColor: "balck",
       headerLeft: () => (
-        <View>
+        <View style={{marginLeft: 20}}>
           <TouchableOpacity onPress={signOutUser} activeOpacity={0.5}>
             {/* <Avatar rounded source={{ uri: auth?.currentUser?.photoURL }} /> */}
             <Avatar
@@ -69,18 +69,37 @@ const HomeScreen = ({navigation}) => {
         </View>
       ),
     });
-  }, []);
+  }, [navigation]);
+
+  const enterChat = (id, chatName) => {
+    navigation.navigate("Chat", {
+      id,
+      chatName,
+    });
+  };
+
+  console.log("data", chats);
 
   return (
     <SafeAreaView>
-      <ScrollView>
+      <ScrollView style={styles.container}>
         {chats.map(({id, data: {chatName}}) => (
-          <CustomeListItem key={id} id={id} chatName={chatName} />
+          <CustomeListItem
+            key={id}
+            id={id}
+            chatName={chatName}
+            enterChat={enterChat}
+          />
         ))}
-        {/* <CustomeListItem></CustomeListItem> */}
       </ScrollView>
     </SafeAreaView>
   );
 };
 
 export default HomeScreen;
+
+const styles = StyleSheet.create({
+  container: {
+    height: "100%",
+  },
+});
