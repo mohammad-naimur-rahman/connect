@@ -67,7 +67,7 @@ const ChatScreen = ({navigation, route}) => {
   }, [navigation, messages]);
 
   const sendMessage = () => {
-    Keyboard.dismiss();
+    // Keyboard.dismiss();
 
     db.collection("chats").doc(route.params.id).collection("messages").add({
       timestamp: firebase.firestore.FieldValue.serverTimestamp(),
@@ -131,10 +131,9 @@ const ChatScreen = ({navigation, route}) => {
                     <Text style={styles.recieverText}>{data.message}</Text>
                   </View>
                 ) : (
-                  <View style={styles.sender}>
+                  <View key={id} style={styles.sender}>
                     <Avatar
                       position="absolute"
-                      rounded
                       containerStyle={{
                         position: "absolute",
                         bottom: -15,
@@ -142,6 +141,7 @@ const ChatScreen = ({navigation, route}) => {
                       }}
                       bottom={-15}
                       right={-5}
+                      rounded
                       size={30}
                       source={{
                         uri: data.photoURL,
