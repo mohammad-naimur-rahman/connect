@@ -8,7 +8,7 @@ import CustomeListItem from "../Components/CustomeListItem";
 import {auth, db} from "../firebase";
 
 const HomeScreen = ({navigation}) => {
-  const [chats, setChats] = useState(["slkd"]);
+  const [chats, setChats] = useState([]);
 
   const signOutUser = () => {
     auth.signOut().then(() => {
