@@ -1,4 +1,4 @@
-import React, { useLayoutEffect } from 'react'
+import React, { useEffect, useLayoutEffect, useState } from 'react'
 import { ScrollView } from 'react-native'
 import { SafeAreaView, TouchableOpacity } from 'react-native'
 import { View, Text } from 'react-native'
@@ -9,11 +9,22 @@ import { auth, db } from "../firebase"
 
 
 const HomeScreen = ({ navigation }) => {
+    const [chats, setCahts] = useState([]);
     const signOutUser = () => {
         auth.signOut().then(() => {
             navigation.replace("Login")
         })
     }
+    useEffect(() => {
+        const unsubscribe = db.collection('chats').onSnapshot(snapshot =>
+            setCahts(snapshot.docs.map(doc => ({
+                id: doc.id,
+                data: doc.data()
+            }))
+            )
+        );
+        return unsubscribe;
+    }, [])
     useLayoutEffect(() => {
         navigation.setOptions({
             title: "Chat",
@@ -42,7 +53,7 @@ const HomeScreen = ({ navigation }) => {
                     <TouchableOpacity activeOpacity={8.5}>
                         <AntDesign name="camerao" size={24} color="black" />
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={() => navigation.navigate("Add Chat")} activeOpacity={8.5}>
+                    <TouchableOpacity onPress={() => navigation.navigate("AddChat")} activeOpacity={8.5}>
                         <SimpleLineIcons name="pencil" size={24} color="black" />
                     </TouchableOpacity>
                 </View>
@@ -52,7 +63,10 @@ const HomeScreen = ({ navigation }) => {
     return (
         <SafeAreaView>
             <ScrollView>
-                <CustomeListItem />
+                {chats.map(({ id, data: { chatName } }) => (
+                    <CustomeListItem key={id} id={id} chatName={chatName} />
+                ))}
+
             </ScrollView>
         </SafeAreaView>
     )

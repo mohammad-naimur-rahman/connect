@@ -2,8 +2,8 @@ import React, { Component } from 'react';
 import { Avatar } from 'react-native-elements';
 import { ListItem } from 'react-native-elements';
 
-const componentName = ({ id, chatName, enterChat }) => (
-    <ListItem>
+const CustomeListItem = ({ id, chatName, enterChat }) => (
+    <ListItem key={id} bottomDivider>
         <Avatar
             rounded
             source={{
@@ -13,14 +13,14 @@ const componentName = ({ id, chatName, enterChat }) => (
 
         <ListItem.Content>
             <ListItem.Title style={{ fontWeight: "800" }}>
-                Friends Chat
+                {chatName}
             </ListItem.Title>
             <ListItem.Subtitle numberOfList={1} ellipsizeMode='tail'>
-                This is a Subtitle
+                ABC
             </ListItem.Subtitle>
         </ListItem.Content>
     </ListItem>
 );
 
-export default componentName;
+export default CustomeListItem;
 
